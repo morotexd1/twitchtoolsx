@@ -22,7 +22,6 @@ def send_message(oauth, channel, message):
       s.send(
           bytes(f"PRIVMSG #{channel} : {message} {noise} \r\n",
                 encoding='utf8'))
-      stdout.write(f"\n{oauth}: {noise} {message} in {channel}")
   except Exception as error:
     stdout.write(f"\n{error}")
 
