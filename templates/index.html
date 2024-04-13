@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviar e Parar Mensagem para Canal Twitch</title>
+</head>
+<body>
+    <h1>Raid na twitch feito por daniel peçanha</h1>
+    <form action="/send_message" method="post" id="messageForm">
+        <label for="channel">Channel: :</label>
+        <input type="text" id="channel" name="channel" required><br><br>
+
+        <label for="filename">Filename(padrão: tokens.txt):</label>
+        <input type="text" id="filename" name="filename" required><br><br>
+
+        <label for="message">Message:</label><br>
+        <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br>
+
+        <button type="submit" id="sendMessageBtn">Send message</button>
+        <button type="button" id="stopMessageBtn">Stop</button>
+    </form>
+
+    <script>
+        document.getElementById("stopMessageBtn").addEventListener("click", function() {
+            fetch("/stop_message")
+                .then(response => {
+                    if (response.ok) {
+                        alert("Envio de mensagens parado!");
+                    } else {
+                        alert("Erro ao parar o envio de mensagens!");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error: ", error);
+                });
+        });
+    </script>
+</body>
+</html>
