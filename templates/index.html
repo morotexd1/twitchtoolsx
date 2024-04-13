@@ -8,10 +8,10 @@
 <body>
     <h1>Raid na twitch feito por daniel peçanha</h1>
     <form action="/send_message" method="post" id="messageForm">
-        <label for="channel">Channel: :</label>
+        <label for="channel">Channel: </label>
         <input type="text" id="channel" name="channel" required><br><br>
 
-        <label for="filename">Filename(padrão: tokens.txt):</label>
+        <label for="filename">Filename (padrão: tokens.txt):</label>
         <input type="text" id="filename" name="filename" required><br><br>
 
         <label for="message">Message:</label><br>
@@ -20,6 +20,25 @@
         <button type="submit" id="sendMessageBtn">Send message</button>
         <button type="button" id="stopMessageBtn">Stop</button>
     </form>
+
+    <h2>Follow Users</h2>
+    <form action="/follow_users" method="post" id="followForm">
+        <label for="users">Lista de usuários:</label><br>
+        <textarea id="users" name="users" rows="4" cols="50" required></textarea><br><br>
+
+        <label for="tokensFile">Arquivo de Tokens:</label>
+        <input type="text" id="tokensFile" name="tokensFile" required><br><br>
+
+        <button type="submit" id="followUsersBtn">Follow Users</button>
+        <button type="button" id="stopFollowBtn">Stop Following</button>
+    </form>
+
+    <div id="followInfo">
+        <h2>Follow Info</h2>
+        <ul id="followInfoList">
+            <!-- Informações sobre os tokens que seguiram os usuários serão exibidas aqui -->
+        </ul>
+    </div>
 
     <script>
         document.getElementById("stopMessageBtn").addEventListener("click", function() {
@@ -30,6 +49,30 @@
                     } else {
                         alert("Erro ao parar o envio de mensagens!");
                     }
+                })
+                .catch(error => {
+                    console.error("Error: ", error);
+                });
+        });
+
+        document.getElementById("stopFollowBtn").addEventListener("click", function() {
+            fetch("/stop_follow")
+                .then(response => {
+                    if (response.ok) {
+                        alert("Seguimento de usuários parado!");
+                        return response.json();
+                    } else {
+                        alert("Erro ao parar o seguimento de usuários!");
+                    }
+                })
+                .then(data => {
+                    const followInfoList = document.getElementById("followInfoList");
+                    followInfoList.innerHTML = "";
+                    data.forEach(tokenInfo => {
+                        const li = document.createElement("li");
+                        li.textContent = tokenInfo;
+                        followInfoList.appendChild(li);
+                    });
                 })
                 .catch(error => {
                     console.error("Error: ", error);
